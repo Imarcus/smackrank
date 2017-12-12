@@ -1,0 +1,28 @@
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    width: 160px
+    height: 28px;
+    padding: 8px;
+    font: 12px sans-serif;
+    background-color: #555;
+    color: #fff;
+    border: 0px;
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+br {
+   line-height: 150%;
+}
+
+div.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}

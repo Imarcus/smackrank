@@ -1,0 +1,33 @@
+svg text {
+    stroke-width: 1px;
+}
+
+svg path {
+  fill: none;
+  stroke-width: 3px;
+}
+
+svg .x-axis path {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+svg .x-axis line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.x-axis {
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.x-axis .tick line {
+    stroke: lightgrey;
+}
+
+path.domain {
+    stroke-width: 1px;
+}

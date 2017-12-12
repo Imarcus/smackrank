@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	    <title>Smackrank</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="graphs.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="tooltip.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+	    <script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="league.js"></script>
+	</head>
+	<body>
+
+	<div class="container-fluid text-center">
+		<h2 id="league-title" class="display-3"></h2>
+
+		<div class="row">
+			<div class="col">
+				<p class="display-4">Menu</p>
+				<div id="legend-list" class="list-group pre-scrollable"></div>
+				<div class="top-buffer">
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addPlayerModal">
+						Add player
+					</button>
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#playMatchModal">
+						Play match
+					</button>
+				</div>
+			</div>
+			<div id="middle-col" class="col">
+				<div class="row">
+					<div id="graph" class="main"></div>
+				</div>
+				<div class="row">
+					<table class="table table-hover table-sm">
+						<thead>
+							<tr col="row col-12">
+								<th width="5%" scope="col">#</th>
+								<th style="text-align: left" width="40%" scope="col">Player</th>
+								<th width="5%" scope="col">MP</th>
+								<th width="5%" scope="col">W</th>
+								<th width="5%" scope="col">L</th>
+								<th width="5%" scope="col">W/L</th>
+								<th width="30%" scope="col">Rating</th>
+							</tr>
+						</thead>
+						<tbody id="playerTableBody"></tbody>
+					</table>
+				</div>
+			</div>
+
+			<div id="right-col" class="col">
+				<p class="display-4">Matches</p>
+				<div id="match-list" class="list-group pre-scrollable"></div>
+				<div class="top-buffer">
+
+				</div>
+			</div>
+		</div>
+
+		<div id="Content"></div>
+	</div>
+	<div class="modal fade" id="addPlayerModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Add a new player</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form id="add-player-form">
+						<div class="form-group">
+							<label for="addPlayerNameField">Player name</label>
+							<input class="form-control" id="addPlayerNameField">
+						</div>
+						<button type="submit" class="btn btn-info" value="button">Add player</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="playMatchModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Play match</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form id="play-match-form">
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<label for="homePlayerMatchSelect">Home player</label>
+									<select multiple class="form-control" id="homePlayerMatchSelect">
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="homePlayerScoreField">Home player score</label>
+									<input class="form-control" id="homePlayerScoreField">
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label for="awayPlayerMatchSelect">Away player</label>
+									<select multiple class="form-control" id="awayPlayerMatchSelect">
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="awayPlayerScoreField">Home player score</label>
+									<input class="form-control" id="awayPlayerScoreField">
+								</div>
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-info" value="button">Submit score</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>
