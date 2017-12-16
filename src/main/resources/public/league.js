@@ -10,9 +10,7 @@ $(function() {
         populatePlayMatchForm(data);
     });
 
-    $.get("/get-league-statistics", {league : $.urlParam('league')}, function(data, status){
-        console.log(data);
-    })
+
 
     $('#add-player-form').on('submit', function(e){
         e.preventDefault();
@@ -180,7 +178,7 @@ $(function() {
 
                     var playerStats = leagueStats.playerStatistics[h];
                     var playerTableRow =
-                        $('<tr>')
+                        $('<tr class="player-row" data-url="/player.html?league=' +  league.name + '&player=' + playerStats.name + '">')
                             .append($('<th scope="row">').text(h + 1))
                             .append($('<td id="' + playerStats.name + '-row" style="text-align: left">'))//.text(playerStats.name))
                             .append($('<td>').text(playerStats.matchesPlayed))
@@ -209,70 +207,39 @@ $(function() {
                     }).on("mouseout", function(d) {
                        setOpacity((this.id + '-path'), "1");
                     });
+
+                    playerTableRow.on('click', function() {
+                        window.location = $(this).data('url');
+                    });
                 }
 
             })
-//        $.get("/get-players-sorted", { league : league.name }, function(players, status) {
-//            for(k = 0; k < players.length; k++) {
-//                var player = players[k];
-//
-//
-//
-//                var playerListItem =
-//                    $('<a class="list-group-item list-group-item-action flex-column align-items-start" style="background:' + player.colour + ';">')
-//                        .append(
-//                            $('<div class="d-flex w-100 justify-content-between">')
-//                            .append(
-//                                $('<h5 class="mb-1">')
-//                                .text(
-//                                    (k+1) + '. ' + player.name)
-//                            ).append(
-//                                $('<small>')
-//                                .text('Rating')
-//                                .append(
-//                                    $('<p class="font-weight-bold">')
-//                                    .text(player.rating)
-//                                )
-//                            )
-//                        );
-//                playerListItem.attr("id", player.name);
-//                playerListItem.on("mouseover", function(d) {
-//                    setOpacity((this.id + '-path'), "0.2");
-//                }).on("mouseout", function(d) {
-//                   setOpacity((this.id + '-path'), "1");
-//               });
-//                legendList.append(playerListItem);
-//            }
-//        });
     }
 
     function drawMatchHistory(league) {
         var matchList = $('#match-list');
         var matches = league.matches;
 
-        for(y = 0; y < matches.length; y++) {
+        for(y = matches.length - 1; y >= 0; y--) {
             var match = matches[y];
             var homePlayer, awayPlayer;
             if(match.homePlayerScore > match.awayPlayerScore) {
-                homePlayer = '<strong>' + match.homePlayerName + ' - ' + match.homePlayerScore + "</strong>";
-                awayPlayer = match.awayPlayerName + ' - ' + match.awayPlayerScore;
+                homePlayer = '<strong>' +  match.homePlayerName + ' ' + match.homePlayerScore + "</strong>";
+                awayPlayer = match.awayPlayerScore + ' ' + match.awayPlayerName;
             } else if (match.awayPlayerScore > match.homePlayerScore) {
-                awayPlayer = '<strong>' + match.awayPlayerName + ' - ' + match.awayPlayerScore + "</strong>";
-                homePlayer = match.homePlayerName + ' - ' + match.homePlayerScore;
+                awayPlayer = '<strong>' + match.awayPlayerScore + ' ' +  match.awayPlayerName + "</strong>";
+                homePlayer = match.homePlayerName + ' ' + match.homePlayerScore;
             } else {
-                homePlayer = match.homePlayerName + ' - ' + match.homePlayerScore;
-                awayPlayer = match.awayPlayerName + ' - ' + match.awayPlayerScore;
+                homePlayer = match.homePlayerName + ' ' + match.homePlayerScore;
+                awayPlayer = match.awayPlayerScore + ' ' + match.awayPlayerName;
             }
 
             var matchListItem =
                 $('<a class="list-group-item list-group-item-action" style="background-color:#f6f6f6;">')
-                .append($('<div class="row">')
-                    .append($('<div class="col">').append("hej"))
-                    .append($('<div class="col">')
-                        .append($('<div class="row">').append($('<div class="col align-self-end">').append(homePlayer)))
-                        .append($('<div class="row">').append($('<div class="col align-self-end">').append(awayPlayer)))
-                    )
-                );
+                    .append($('<div class="row">')
+                        .append($('<div class="col-2">').append($('<h5>').text(y+1)))
+                        .append($('<div class="col-10">').append(homePlayer + '  -  ' + awayPlayer))
+                    );
             matchList.append(matchListItem);
         }
     }

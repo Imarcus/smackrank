@@ -15,8 +15,12 @@ import smackrank.model.statistics.OpponentStatistic;
 import smackrank.model.statistics.PlayerStatistics;
 import smackrank.util.PlayerRatingComparator;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 public class ApplicationController {
@@ -224,18 +228,22 @@ public class ApplicationController {
             }
         }
 
+        int matchesPlayed = nrWon + nrLost + nrDraw;
+        double averageScoreWonPerMatch = round((double) totalScore / matchesPlayed, 2);
+        double averageScoreConcededPerMatch = round((double) totalConceded / matchesPlayed, 2);
+
         PlayerStatistics playerStatistics = new PlayerStatistics();
         playerStatistics.setName(name);
         playerStatistics.setRating(player.getRating());
         playerStatistics.setColour(player.getColour());
-        playerStatistics.setMatchesPlayed(nrWon + nrLost + nrDraw);
+        playerStatistics.setMatchesPlayed(matchesPlayed);
         playerStatistics.setMatchesWon(nrWon);
         playerStatistics.setMatchesLost(nrLost);
         playerStatistics.setMatchesDraw(nrDraw);
         playerStatistics.setTotalScoreWon(totalScore);
         playerStatistics.setTotalScoreConceded(totalConceded);
-        playerStatistics.setAverageScoreWonPerMatch((double) totalScore / playerStatistics.getMatchesPlayed());
-        playerStatistics.setAverageScoreConcededPerMatch((double) totalConceded / playerStatistics.getMatchesPlayed());
+        playerStatistics.setAverageScoreWonPerMatch(averageScoreWonPerMatch);
+        playerStatistics.setAverageScoreConcededPerMatch(averageScoreConcededPerMatch);
         playerStatistics.setHighestRatingEver(highestRating);
         playerStatistics.setLowestRatingEver(lowestRating);
         playerStatistics.setPlayerMostLost(maxLostName);
@@ -278,5 +286,18 @@ public class ApplicationController {
         stat.setTimesPlayed(stat.getTimesPlayed() + 1);
         opponentList.removeIf(o -> o.getName().equals(stat.getName()));
         opponentList.add(stat);
+    }
+
+    public static double round(double value, int places) {
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
+            return 0;
+        }
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
