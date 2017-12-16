@@ -18,7 +18,7 @@ $(function(){
         var leagueName = $("#leagueNameInput").val();
         var playerNames = $("#playersTextArea").val();
         $.get("/create-league-with-players", {leagueName : leagueName, playerNames: playerNames}, function(){
-            window.location.href = window.location.href + "/league.html?league=" + leagueName ;
+            window.location.href = window.location.href + "league.html?league=" + leagueName ;
         });
     });
 });

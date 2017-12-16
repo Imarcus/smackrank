@@ -180,7 +180,7 @@ $(function() {
                     var playerTableRow =
                         $('<tr class="player-row" data-url="/player.html?league=' +  league.name + '&player=' + playerStats.name + '">')
                             .append($('<th scope="row">').text(h + 1))
-                            .append($('<td id="' + playerStats.name + '-row" style="text-align: left">'))//.text(playerStats.name))
+                            .append($('<td id="row-' + playerStats.id + '" style="text-align: left">'))//.text(playerStats.name))
                             .append($('<td>').text(playerStats.matchesPlayed))
                             .append($('<td>').text(playerStats.matchesWon))
                             .append($('<td>').text(playerStats.matchesLost))
@@ -192,7 +192,7 @@ $(function() {
 //                    var rectSize = 15;
                     var rectWidth = 15;
                     var rectHeight = 20;
-                    var svg = d3.select('#' + playerStats.name + '-row').append('svg')
+                    var svg = d3.select('#row-' + playerStats.id).append('svg')
                         .attr('width',200).attr('height',rectHeight);
                     var rect = svg.append('rect').attr('fill',function(d) {return playerStats.colour;})
                         .attr('width',rectWidth).attr('height',rectHeight);

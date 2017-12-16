@@ -48,6 +48,14 @@ public class Player implements Rated{
 		this.colour = colour;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return String.format(

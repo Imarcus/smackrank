@@ -74,6 +74,7 @@ public class ApplicationController {
 
     @RequestMapping("/get-league")
     public League getLeague(@RequestParam(value = "league") String leagueName) {
+        leagueName = leagueName.replace("%20", " ");
         League league = repository.findByName(leagueName).get(0);
         return league;
     }
@@ -84,18 +85,24 @@ public class ApplicationController {
     }
 
     @RequestMapping("/create-league-with-players")
-    public void createLeagueWithPlayers(@RequestParam(value = "leagueName")String leagueName, @RequestParam(value = "playerNames") String playerNames) {
+    public void createLeagueWithPlayers(@RequestParam(value = "leagueName")String leagueName,
+                                        @RequestParam(value = "playerNames") String playerNames) {
         League league = new League(leagueName);
-        ArrayList<String> playerNamesList = new ArrayList<>(Arrays.asList(playerNames.replace(" ","").split(",")));
-        playerNamesList.stream().forEach(p -> league.addPlayer(new Player(p, colours[league.getPlayers().size() % colours.length])));
+        if(playerNames != null && !playerNames.isEmpty()) {
+            ArrayList<String> playerNamesList = new ArrayList<>(Arrays.asList(playerNames.replace(" ","").split(",")));
+            playerNamesList.stream().forEach(p -> league.addPlayer(new Player(p, colours[league.getPlayers().size() % colours.length])));
+        }
         repository.save(league);
     }
 
     @RequestMapping("/add-player")
     public void addPlayer(@RequestParam(value = "leagueName") String leagueName,
                           @RequestParam(value = "playerName") String playerName) {
+        leagueName = leagueName.replace("%20", " ");
+        String playerNameFixed = playerName.replace("%20", " ");
+
         League league = repository.findByName(leagueName).get(0);
-        if(league.getPlayers().stream().filter(p -> p.getName().equals(playerName)).findFirst().isPresent()){
+        if(league.getPlayers().stream().filter(p -> p.getName().equals(playerNameFixed)).findFirst().isPresent()){
             throw new IllegalArgumentException("Player with name " + playerName + " already exists in league");
         }
         league.addPlayer(new Player(playerName, colours[league.getPlayers().size() % colours.length]));
@@ -113,12 +120,15 @@ public class ApplicationController {
     @RequestMapping("/get-player")
     public Player getPlayer(@RequestParam(value = "league") String leagueName,
                             @RequestParam(value = "player") String playerName) {
+        leagueName = leagueName.replace("%20", " ");
+        playerName = playerName.replace("%20", " ");
         League league = repository.findByName(leagueName).get(0);
         return league.findPlayerByName(playerName);
     }
 
     @RequestMapping("/get-league-statistics")
     public LeagueStatistics getLeagueStatistics(@RequestParam(value = "league") String leagueName) {
+        leagueName = leagueName.replace("%20", " ");
         League league = repository.findByName(leagueName).get(0);
         LeagueStatistics leagueStatistics = new LeagueStatistics();
         leagueStatistics.setName(leagueName);
@@ -135,6 +145,9 @@ public class ApplicationController {
     @RequestMapping("/get-player-statistics")
     public PlayerStatistics getPlayerStatistics(@RequestParam(value = "league") String leagueName,
                                                 @RequestParam(value = "player") String playerName) {
+        leagueName = leagueName.replace("%20", " ");
+        playerName = playerName.replace("%20", " ");
+
         League league = repository.findByName(leagueName).get(0);
         Player player = league.findPlayerByName(playerName);
         return calculatePlayerStatistics(league, player);
@@ -233,6 +246,7 @@ public class ApplicationController {
         double averageScoreConcededPerMatch = round((double) totalConceded / matchesPlayed, 2);
 
         PlayerStatistics playerStatistics = new PlayerStatistics();
+        playerStatistics.setId(player.getId());
         playerStatistics.setName(name);
         playerStatistics.setRating(player.getRating());
         playerStatistics.setColour(player.getColour());

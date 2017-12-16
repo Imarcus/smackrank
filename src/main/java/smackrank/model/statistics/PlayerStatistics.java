@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class PlayerStatistics implements Rated {
 
+    private Long id;
     private String name;
     private int rating;
     private int matchesPlayed;
@@ -24,6 +25,14 @@ public class PlayerStatistics implements Rated {
     private ArrayList<OpponentStatistic> opponentList = new ArrayList<>();
 
     public PlayerStatistics() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
